@@ -115,7 +115,7 @@
                 <p class="text-lg text-gray-700 mb-6">
                     Like nature itself, our systems are constantly evolving and adapting.
                 </p>
-                <canvas id="morph-canvas" class="w-[400px] h-[400px] mx-auto rounded-lg"></canvas>
+                <canvas id="morph-canvas" class="w-[600px] h-[600px] mx-auto rounded-lg"></canvas>
             </div>
         </section>
     </main>
@@ -279,7 +279,7 @@
             alpha: true
         });
 
-        const morphSize = Math.min(400, window.innerWidth);
+        const morphSize = Math.min(600, window.innerWidth);
         morphRenderer.setSize(morphSize, morphSize);
         morphRenderer.setClearColor(0x000000, 0);
 
@@ -362,7 +362,7 @@
 
         // Handle window resize
         window.addEventListener('resize', () => {
-            const size = Math.min(400, window.innerWidth);
+            const size = Math.min(600, window.innerWidth);
             morphCamera.aspect = 1;
             morphCamera.updateProjectionMatrix();
             morphRenderer.setSize(size, size);
