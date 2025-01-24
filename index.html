@@ -83,57 +83,6 @@
     </main>
 
     <script type="module">
-        // Initialize Cascadia map
-        const map = L.map('cascadia-map').setView([47.2529, -122.4443], 6);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        // Sample validator data
-        const validators = [
-            { lat: 47.6062, lng: -122.3321, name: "Seattle Hub", status: "active" },
-            { lat: 45.5155, lng: -122.6789, name: "Portland Node", status: "active" },
-            { lat: 49.2827, lng: -123.1207, name: "Vancouver BC", status: "active" },
-            { lat: 44.0521, lng: -123.0868, name: "Eugene Station", status: "pending" },
-            { lat: 48.4284, lng: -123.3656, name: "Victoria Point", status: "pending" }
-        ];
-
-        // Add validators to map
-        validators.forEach(v => {
-            const color = v.status === "active" ? "green" : "yellow";
-            L.circleMarker([v.lat, v.lng], {
-                radius: 8,
-                fillColor: color,
-                color: "#fff",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
-            })
-            .bindPopup(`<b>${v.name}</b><br>Status: ${v.status}`)
-            .addTo(map);
-        });
-
-        // Add some ecological hotspots
-        const hotspots = [
-            { lat: 46.8523, lng: -121.7603, name: "Mount Rainier National Park" },
-            { lat: 48.7718, lng: -121.8145, name: "North Cascades" },
-            { lat: 44.4198, lng: -122.6732, name: "Willamette National Forest" }
-        ];
-
-        hotspots.forEach(h => {
-            L.circleMarker([h.lat, h.lng], {
-                radius: 8,
-                fillColor: "blue",
-                color: "#fff",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
-            })
-            .bindPopup(`<b>${h.name}</b><br>Ecological Hotspot`)
-            .addTo(map);
-        });
-    </script>
-    <script type="module">
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
