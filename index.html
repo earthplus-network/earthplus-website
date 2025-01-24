@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>earth+ | Sustainable Living</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
     <script type="importmap">
     {
         "imports": {
             "three": "https://unpkg.com/three@0.156.1/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@0.156.1/examples/jsm/",
-            "three/examples/jsm/modifiers/SimplexNoise": "https://unpkg.com/three@0.156.1/examples/jsm/math/SimplexNoise.js"
+            "three/addons/": "https://unpkg.com/three@0.156.1/examples/jsm/"
         }
     }
     </script>
@@ -83,44 +80,9 @@
             </div>
         </section>
 
-        <!-- Cascadia Validators Map Section -->
-        <section class="px-4 py-12 max-w-4xl mx-auto">
-            <div class="bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Cascadia Bioregion Validators</h2>
-                <p class="text-lg text-gray-700 mb-6">
-                    Explore our network of validators across the Cascadia bioregion, spanning from Northern California to British Columbia.
-                </p>
-                <div id="cascadia-map" class="h-[400px] w-full rounded-lg mb-6"></div>
-                <div class="grid md:grid-cols-3 gap-4 text-sm text-gray-600">
-                    <div class="flex items-center">
-                        <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
-                        Active Validators
-                    </div>
-                    <div class="flex items-center">
-                        <span class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
-                        Pending Validators
-                    </div>
-                    <div class="flex items-center">
-                        <span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
-                        Ecological Hotspots
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Morphing Shape Section -->
-        <section class="px-4 py-12 max-w-4xl mx-auto">
-            <div class="bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Living Forms</h2>
-                <p class="text-lg text-gray-700 mb-6">
-                    Like nature itself, our systems are constantly evolving and adapting.
-                </p>
-                <canvas id="morph-canvas" class="w-[600px] h-[600px] mx-auto rounded-lg"></canvas>
-            </div>
-        </section>
     </main>
 
-    <script>
+    <script type="module">
         // Initialize Cascadia map
         const map = L.map('cascadia-map').setView([47.2529, -122.4443], 6);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -263,112 +225,6 @@
         });
 
         animate();
-    </script>
-
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { SimplexNoise } from 'three/examples/jsm/modifiers/SimplexNoise';
-
-        // Morph scene setup
-        const morphScene = new THREE.Scene();
-        const morphCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-        const morphRenderer = new THREE.WebGLRenderer({
-            canvas: document.querySelector('#morph-canvas'),
-            antialias: true,
-            alpha: true
-        });
-
-        const morphSize = Math.min(600, window.innerWidth);
-        morphRenderer.setSize(morphSize, morphSize);
-        morphRenderer.setClearColor(0x000000, 0);
-
-        // Morph controls
-        const morphControls = new OrbitControls(morphCamera, morphRenderer.domElement);
-        morphControls.enableDamping = true;
-        morphControls.dampingFactor = 0.05;
-        morphControls.rotateSpeed = 0.5;
-        morphControls.enableZoom = false;
-
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        morphScene.add(ambientLight);
-        
-        const pointLight = new THREE.PointLight(0xffffff, 1);
-        pointLight.position.set(5, 5, 5);
-        morphScene.add(pointLight);
-
-        // Create base geometry
-        const geometry = new THREE.IcosahedronGeometry(1, 4);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x00ff88,
-            wireframe: true,
-            emissive: 0x00ff88,
-            emissiveIntensity: 0.2
-        });
-        
-        const morphMesh = new THREE.Mesh(geometry, material);
-        morphScene.add(morphMesh);
-
-        // Setup noise
-        const noise = new SimplexNoise();
-        let phase = 0;
-
-        // Animation
-        function animateMorph() {
-            requestAnimationFrame(animateMorph);
-            
-            phase += 0.01;
-            
-            // Update vertices
-            const positions = morphMesh.geometry.attributes.position;
-            const vector = new THREE.Vector3();
-            
-            for (let i = 0; i < positions.count; i++) {
-                vector.fromBufferAttribute(positions, i);
-                const distance = vector.length();
-                
-                // Create organic movement with noise
-                const noise1 = noise.noise3d(
-                    vector.x * 1.5 + phase,
-                    vector.y * 1.5 + phase,
-                    vector.z * 1.5
-                ) * 0.3;
-                
-                const noise2 = noise.noise3d(
-                    vector.x * 3 - phase,
-                    vector.y * 3,
-                    vector.z * 3
-                ) * 0.15;
-                
-                vector.normalize();
-                vector.multiplyScalar(distance + noise1 + noise2);
-                
-                positions.setXYZ(i, vector.x, vector.y, vector.z);
-            }
-            
-            positions.needsUpdate = true;
-            
-            // Rotate mesh
-            morphMesh.rotation.x += 0.005;
-            morphMesh.rotation.y += 0.005;
-            
-            morphControls.update();
-            morphRenderer.render(morphScene, morphCamera);
-        }
-
-        // Position camera
-        morphCamera.position.z = 3;
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            const size = Math.min(600, window.innerWidth);
-            morphCamera.aspect = 1;
-            morphCamera.updateProjectionMatrix();
-            morphRenderer.setSize(size, size);
-        });
-
-        animateMorph();
     </script>
 </body>
 </html>
