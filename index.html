@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>earth+ | Sustainable Living</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.156.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.156.1/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body class="bg-white text-gray-800 leading-relaxed">
+    <nav class="fixed top-0 w-full bg-white shadow-md z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="text-2xl font-bold text-gray-800">earth+</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#about" class="text-gray-600 hover:text-green-500 font-medium transition-colors">About</a>
+                    <a href="#solutions" class="text-gray-600 hover:text-green-500 font-medium transition-colors">Solutions</a>
+                    <a href="#impact" class="text-gray-600 hover:text-green-500 font-medium transition-colors">Impact</a>
+                    <a href="#join" class="text-gray-600 hover:text-green-500 font-medium transition-colors">Join Us</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content with top padding to account for fixed nav -->
+    <main class="pt-16">
+        <!-- Hero section with horizontal and vertical padding -->
+        <section class="px-4 py-12 text-center">
+            <!-- Container with max width, centered, semi-transparent white background -->
+            <div class="max-w-3xl mx-auto bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
+                <!-- Responsive heading: text-5xl on mobile, text-6xl on medium screens -->
+                <h1 class="text-5xl md:text-6xl font-extrabold text-gray-800 mb-6">Living Intelligence</h1>
+                <!-- Subtitle with larger text and gray color -->
+                <p class="text-xl text-gray-600 mb-8">Biodesigned Experiments for Earthly Survival</p>
+                <!-- Button with padding, green background, hover animation -->
+                <a href="#join" class="inline-block px-8 py-4 bg-green-500 text-white font-semibold rounded-full hover:-translate-y-0.5 transition-transform">
+                    Get Started
+                </a>
+            </div>
+        </section>
+        <!-- Square canvas element, centered horizontally, with red border for debugging -->
+        <canvas id="earth-canvas" class="w-[600px] h-[600px] mx-auto my-4 border-[3px] border-red-500"></canvas>
+    </main>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        // scene is transparent, will show page background
+        scene.position.y = 0; // Reset scene position
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000); // Set aspect ratio to 1 for square
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.querySelector('#earth-canvas'),
+            antialias: true,
+            alpha: true
+        });
+        const size = Math.min(600, window.innerWidth);
+        renderer.setSize(size, size);
+
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.rotateSpeed = 0.5;
+        controls.enableZoom = false;
+
+        // Earth
+        const earthGeometry = new THREE.SphereGeometry(15, 32, 32);
+        const earthMaterial = new THREE.MeshPhongMaterial({
+            color: 0x4CAF50,
+            transparent: true,
+            opacity: 0.9,
+            wireframe: true
+        });
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+        scene.add(earth);
+
+        // Nodes and edges
+        const nodeCount = 15;
+        const nodes = [];
+        const nodeGeometry = new THREE.SphereGeometry(0.1, 16, 16);
+        const nodeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+        for (let i = 0; i < nodeCount; i++) {
+            const phi = Math.acos(-1 + (2 * i) / nodeCount);
+            const theta = Math.sqrt(nodeCount * Math.PI) * phi;
+            
+            const node = new THREE.Mesh(nodeGeometry, nodeMaterial);
+            node.position.setFromSphericalCoords(20, phi, theta);
+            nodes.push(node);
+            scene.add(node);
+        }
+
+        // Connect nodes with edges
+        const edgesMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3 });
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                if (Math.random() > 0.7) continue;
+                const geometry = new THREE.BufferGeometry().setFromPoints([
+                    nodes[i].position,
+                    nodes[j].position
+                ]);
+                const edge = new THREE.Line(geometry, edgesMaterial);
+                scene.add(edge);
+            }
+        }
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 1);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // Camera position
+        camera.position.z = 25; // Move camera closer
+
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+            earth.rotation.y += 0.001;
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const size = Math.min(600, window.innerWidth);
+            camera.aspect = 1; // Keep it square
+            camera.updateProjectionMatrix();
+            renderer.setSize(size, size);
+        });
+
+        animate();
+    </script>
+</body>
+</html>
