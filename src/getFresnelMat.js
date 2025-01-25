@@ -3,9 +3,9 @@ import * as THREE from 'three';
 export function getFresnelMat() {
   return new THREE.ShaderMaterial({
     uniforms: {
-      fresnelBias: { value: 0.1 },
-      fresnelScale: { value: 1.0 },
-      fresnelPower: { value: 2.0 },
+      fresnelBias: { value: 0.05 },
+      fresnelScale: { value: 2.0 },
+      fresnelPower: { value: 3.0 },
     },
     vertexShader: `
       uniform float fresnelBias;
@@ -31,10 +31,10 @@ export function getFresnelMat() {
       varying float vReflectionFactor;
       
       void main() {
-        gl_FragColor = vec4(0.2, 0.5, 1.0, vReflectionFactor);
+        gl_FragColor = vec4(0.1, 0.4, 1.0, vReflectionFactor * 0.8);
       }
     `,
     transparent: true,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
   });
 }
