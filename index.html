@@ -137,11 +137,11 @@
 
         // Clouds
         const cloudsMat = new THREE.MeshStandardMaterial({
-            map: loader.load("./textures/04_earthcloudmap.jpg"),
+            map: loader.load("/textures/04_earthcloudmap.jpg"),
             transparent: true,
             opacity: 0.8,
             blending: THREE.AdditiveBlending,
-            alphaMap: loader.load('./textures/05_earthcloudmaptrans.jpg'),
+            alphaMap: loader.load('/textures/05_earthcloudmaptrans.jpg'),
         });
         const cloudsMesh = new THREE.Mesh(geometry, cloudsMat);
         cloudsMesh.scale.setScalar(1.003);
