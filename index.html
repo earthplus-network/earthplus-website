@@ -113,13 +113,14 @@
     //.bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
     
     // Setup renderer
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     document.getElementById('globe').appendChild(renderer.domElement);
   
     // Setup scene
     const scene = new THREE.Scene();
+    scene.background = null;
     scene.add(Globe);
     scene.add(new THREE.AmbientLight(0xcccccc, Math.PI));
     scene.add(new THREE.DirectionalLight(0xffffff, Math.PI));
