@@ -51,7 +51,7 @@
         </section>
 
         <!-- a globe -->
-        <div id="globe" class="w-[440px] h-[440px] mx-auto bg-white"></div>
+        <div id="globe" class="w-[300px] h-[300px] mx-auto"></div>
 
         <!-- Validator Description Section -->
         <section class="px-4 py-12 max-w-4xl mx-auto">
@@ -109,15 +109,9 @@
     //.bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
     
     // Setup renderer
-    const renderer = new THREE.WebGLRenderer({ 
-        alpha: true,
-        antialias: true,
-        powerPreference: "high-performance",
-        premultipliedAlpha: true
-    });
-    renderer.setClearAlpha(0);
-    renderer.setSize(440, 440);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(300, 300);
+    renderer.setPixelRatio(window.devicePixelRatio);
     document.getElementById('globe').appendChild(renderer.domElement);
   
     // Setup scene
@@ -131,9 +125,9 @@
     const camera = new THREE.PerspectiveCamera();
     camera.aspect = 1; // Square aspect ratio for our 300x300 container
     camera.updateProjectionMatrix();
-    camera.position.z = 440;  // Move camera further back to zoom out
+    camera.position.z = 800;  // Move camera back to fit larger globe
 
-    // Scale down the globe
+    // Scale up the globe
     globe.scale.set(4, 4, 4);
 
     // Kick-off renderer
