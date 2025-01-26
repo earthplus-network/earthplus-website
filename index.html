@@ -51,7 +51,7 @@
         </section>
 
         <!-- a globe -->
-        <div id="globe" class="h-[400px]"></div>
+        <div id="globe" class="w=[300px]" style="height:300px;max-height:300px;width:100%"></div>
 
         <!-- Square canvas element, centered horizontally, with red border for debugging -->
         <canvas id="earth-canvas" class="w-[600px] h-[600px] mx-auto my-4"></canvas>
@@ -107,8 +107,9 @@
     import ThreeGlobe from 'https://esm.sh/three-globe?external=three';
     import * as THREE from 'https://esm.sh/three';
 
-    const Globe = new ThreeGlobe()
-    .globeImageUrl('/textures/03_earthlights1k.jpg')
+    const globe = new ThreeGlobe()
+    .globeImageUrl('/textures/06_earth.jpg')
+   // .globeImageUrl('/textures/03_earthlights1k.jpg')
     //.globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
     //.bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
     
@@ -121,7 +122,7 @@
     // Setup scene
     const scene = new THREE.Scene();
     scene.background = null;
-    scene.add(Globe);
+    scene.add(globe);
     scene.add(new THREE.AmbientLight(0xcccccc, Math.PI));
     scene.add(new THREE.DirectionalLight(0xffffff, Math.PI));
   
@@ -129,10 +130,11 @@
     const camera = new THREE.PerspectiveCamera();
     camera.aspect = window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
-    camera.position.z = 500;  
+    camera.position.z = 300;  
 
     // Kick-off renderer
     (function animate() { // IIFE
+        globe.rotation.y += 0.01;
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
     })();
