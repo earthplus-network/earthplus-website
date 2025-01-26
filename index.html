@@ -122,8 +122,8 @@
     const scene = new THREE.Scene();
     scene.background = null;
     scene.add(globe);
-    scene.add(new THREE.AmbientLight(0xcccccc, Math.PI));
-    scene.add(new THREE.DirectionalLight(0xffffff, Math.PI));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+    scene.add(new THREE.DirectionalLight(0xffffff, 5));
   
     // Setup camera
     const camera = new THREE.PerspectiveCamera();
