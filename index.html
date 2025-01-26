@@ -53,9 +53,12 @@
         <!-- a globe -->
         <div id="globe" class="w-[300px] h-[300px] mx-auto"></div>
 
+        <!-- Square canvas element, centered horizontally, with red border for debugging -->
+        <canvas id="earth-canvas" class="w-[600px] h-[600px] mx-auto my-4"></canvas>
 
 
-        <!-- Validator Description Section -->
+
+        <!-- Validator Description Section -->n
         <section class="px-4 py-12 max-w-4xl mx-auto">
             <div class="bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6">The earth+ Validator</h2>
@@ -125,7 +128,7 @@
   
     // Setup camera
     const camera = new THREE.PerspectiveCamera();
-    camera.aspect = 1; // Since we're using a square container (300x300)
+    camera.aspect = window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
     camera.position.z = 300;  
 
