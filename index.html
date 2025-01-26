@@ -51,7 +51,7 @@
         </section>
 
         <!-- a globe -->
-        <div id="globe" class="w=[300px]" style="height:300px;max-height:300px;width:100%"></div>
+        <div id="globe" class="w-[300px] h-[300px] mx-auto"></div>
 
         <!-- Square canvas element, centered horizontally, with red border for debugging -->
         <canvas id="earth-canvas" class="w-[600px] h-[600px] mx-auto my-4"></canvas>
@@ -115,7 +115,7 @@
     
     // Setup renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(300, 300);
     renderer.setPixelRatio(window.devicePixelRatio);
     document.getElementById('globe').appendChild(renderer.domElement);
   
