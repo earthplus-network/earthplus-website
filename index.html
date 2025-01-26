@@ -51,7 +51,7 @@
         </section>
 
         <!-- a globe -->
-        <div id="globe" class="w-[300px] h-[300px] mx-auto"></div>
+        <div id="globe" class="w-[440px] h-[440px] mx-auto"></div>
 
         <!-- Validator Description Section -->
         <section class="px-4 py-12 max-w-4xl mx-auto">
@@ -110,7 +110,7 @@
     
     // Setup renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(300, 300);
+    renderer.setSize(440, 440);
     renderer.setPixelRatio(window.devicePixelRatio);
     document.getElementById('globe').appendChild(renderer.domElement);
   
@@ -125,7 +125,7 @@
     const camera = new THREE.PerspectiveCamera();
     camera.aspect = 1; // Square aspect ratio for our 300x300 container
     camera.updateProjectionMatrix();
-    camera.position.z = 800;  // Move camera back to fit larger globe
+    camera.position.z = 440;  // Adjust camera for proper view
 
     // Scale up the globe
     globe.scale.set(4, 4, 4);
