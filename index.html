@@ -128,7 +128,7 @@
   
     // Setup camera
     const camera = new THREE.PerspectiveCamera();
-    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.aspect = 1; // Square aspect ratio for our 300x300 container
     camera.updateProjectionMatrix();
     camera.position.z = 300;  
 
