@@ -125,10 +125,10 @@
     const camera = new THREE.PerspectiveCamera();
     camera.aspect = 1; // Square aspect ratio for our 300x300 container
     camera.updateProjectionMatrix();
-    camera.position.z = 1200;  // Move camera back to fit larger globe
+    camera.position.z = 800;  // Move camera closer for smaller globe
 
-    // Scale up the globe
-    globe.scale.set(8, 8, 8);
+    // Scale down the globe
+    globe.scale.set(4, 4, 4);
 
     // Kick-off renderer
     (function animate() { // IIFE
