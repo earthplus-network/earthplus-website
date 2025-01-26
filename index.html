@@ -53,9 +53,6 @@
         <!-- a globe -->
         <div id="globe" class="w-[300px] h-[300px] mx-auto"></div>
 
-        <!-- Square canvas element, centered horizontally, with red border for debugging -->
-        <canvas id="earth-canvas" class="w-[600px] h-[600px] mx-auto my-4"></canvas>
-
 
 
         <!-- Validator Description Section -->
@@ -128,7 +125,7 @@
   
     // Setup camera
     const camera = new THREE.PerspectiveCamera();
-    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.aspect = 1; // Since we're using a square container (300x300)
     camera.updateProjectionMatrix();
     camera.position.z = 300;  
 
