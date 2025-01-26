@@ -112,8 +112,10 @@
     const renderer = new THREE.WebGLRenderer({ 
         alpha: true,
         antialias: true,
-        powerPreference: "high-performance"
+        powerPreference: "high-performance",
+        premultipliedAlpha: true
     });
+    renderer.setClearAlpha(0);
     renderer.setSize(400, 400);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     document.getElementById('globe').appendChild(renderer.domElement);
