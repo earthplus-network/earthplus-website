@@ -118,13 +118,26 @@
         powerPreference: "high-performance"
     });
     
-    // Get container size and match card width
+    // Get container and its inner div
     const container = document.getElementById('globe');
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-    renderer.setSize(width, height);
+    const innerDiv = container.querySelector('div');
+    
+    // Function to update sizes
+    const updateSize = () => {
+        const width = innerDiv.clientWidth;
+        const height = innerDiv.clientHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    };
+
+    // Initial size
+    updateSize();
+    
+    // Add resize listener
+    window.addEventListener('resize', updateSize);
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
-    document.getElementById('globe').appendChild(renderer.domElement);
+    innerDiv.appendChild(renderer.domElement);
   
     // Setup scene
     const scene = new THREE.Scene();
