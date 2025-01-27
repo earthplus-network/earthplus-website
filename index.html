@@ -136,7 +136,7 @@
     camera.aspect = 1; // Square aspect ratio for our 300x300 container
     camera.updateProjectionMatrix();
     // Adjust camera based on screen size
-    camera.position.z = window.innerWidth < 768 ? 250 : window.innerWidth < 1024 ? 250 : 270;
+    camera.position.z = window.innerWidth < 768 ? 248 : window.innerWidth < 1024 ? 250 : 270;
 
     // Scale globe based on screen size
     const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
