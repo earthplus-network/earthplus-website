@@ -115,10 +115,11 @@
         powerPreference: "high-performance"
     });
     
-    // Get container size
+    // Get container size and match card width
     const container = document.getElementById('globe');
-    const size = Math.min(container.clientWidth, container.clientHeight);
-    renderer.setSize(size, size);
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
     document.getElementById('globe').appendChild(renderer.domElement);
   
@@ -133,7 +134,7 @@
   
     // Setup camera
     const camera = new THREE.PerspectiveCamera();
-    camera.aspect = 1;
+    camera.aspect = width / height;
     camera.updateProjectionMatrix();
     // Adjust camera based on screen size - increased distances for better visibility
     camera.position.z = window.innerWidth < 768 ? 500 : window.innerWidth < 1024 ? 400 : 350;
