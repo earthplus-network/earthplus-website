@@ -153,7 +153,7 @@
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     // Adjust camera based on screen size - increased distances for better visibility
-    camera.position.z = window.innerWidth < 768 ? 500 : window.innerWidth < 1024 ? 400 : 350;
+    camera.position.z = window.innerWidth < 768 ? 550 : window.innerWidth < 1024 ? 400 : 350;
 
     // Scale globe based on screen size - adjusted scale factors
     const scale = window.innerWidth < 768 ? 3.5 : window.innerWidth < 1024 ? 4 : 4.5;
