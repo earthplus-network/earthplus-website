@@ -133,13 +133,13 @@
   
     // Setup camera
     const camera = new THREE.PerspectiveCamera();
-    camera.aspect = 1; // Square aspect ratio for our 300x300 container
+    camera.aspect = 1;
     camera.updateProjectionMatrix();
-    // Adjust camera based on screen size
-    camera.position.z = window.innerWidth < 768 ? 300 : window.innerWidth < 1024 ? 250 : 270;
+    // Adjust camera based on screen size - increased distances for better visibility
+    camera.position.z = window.innerWidth < 768 ? 500 : window.innerWidth < 1024 ? 400 : 350;
 
-    // Scale globe based on screen size
-    const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
+    // Scale globe based on screen size - adjusted scale factors
+    const scale = window.innerWidth < 768 ? 3.5 : window.innerWidth < 1024 ? 4 : 4.5;
     globe.scale.set(scale, scale, scale);
 
     // Kick-off renderer
