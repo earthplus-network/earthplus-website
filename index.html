@@ -51,10 +51,7 @@
         </section>
 
         <!-- a globe -->
-        <div id="globe" class="px-4 py-12 max-w-4xl mx-auto">
-            <div class="bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-lg h-[240px] md:h-[440px] lg:h-[540px]">
-            </div>
-        </div>
+        <div id="globe" class="max-w-4xl w-[240px] h-[240px] md:w-[440px] md:h-[440px] lg:w-[540px] lg:h-[540px] mx-auto"></div>
 
         <!-- Validator Description Section -->
         <section class="px-4 py-12 max-w-4xl mx-auto">
@@ -118,26 +115,12 @@
         powerPreference: "high-performance"
     });
     
-    // Get container and its inner div
+    // Get container size
     const container = document.getElementById('globe');
-    const innerDiv = container.querySelector('div');
-    
-    // Function to update sizes
-    const updateSize = () => {
-        const width = innerDiv.clientWidth;
-        const height = innerDiv.clientHeight;
-        renderer.setSize(width, height);
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-    };
-
-    // Initial size
-    updateSize();
-    
-    // Add resize listener
-    window.addEventListener('resize', updateSize);
+    const size = Math.min(container.clientWidth, container.clientHeight);
+    renderer.setSize(size, size);
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
-    innerDiv.appendChild(renderer.domElement);
+    document.getElementById('globe').appendChild(renderer.domElement);
   
     // Setup scene
     const scene = new THREE.Scene();
@@ -150,13 +133,13 @@
   
     // Setup camera
     const camera = new THREE.PerspectiveCamera();
-    camera.aspect = width / height;
+    camera.aspect = 1; // Square aspect ratio for our 300x300 container
     camera.updateProjectionMatrix();
-    // Adjust camera based on screen size - increased distances for better visibility
-    camera.position.z = window.innerWidth < 768 ? 550 : window.innerWidth < 1024 ? 400 : 350;
+    // Adjust camera based on screen size
+    camera.position.z = window.innerWidth < 768 ? 300 : window.innerWidth < 1024 ? 250 : 270;
 
-    // Scale globe based on screen size - adjusted scale factors
-    const scale = window.innerWidth < 768 ? 3.5 : window.innerWidth < 1024 ? 4 : 4.5;
+    // Scale globe based on screen size
+    const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
     globe.scale.set(scale, scale, scale);
 
     // Kick-off renderer
