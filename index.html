@@ -186,9 +186,12 @@ camera.updateProjectionMatrix();
 const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
 globe.scale.set(scale, scale, scale);
 
+// Set initial rotation to show Atlantic Ocean
+globe.rotation.y = -Math.PI / 2;
+
 // Animation variables
 const startTime = Date.now();
-const animationDuration = 800; // Shorter duration: 0.8 seconds
+const animationDuration = 800;
 const initialZ = camera.position.z;
 let lastTime = startTime;
 
@@ -199,13 +202,12 @@ let lastTime = startTime;
     const elapsed = currentTime - startTime;
     lastTime = currentTime;
     
-    // Smooth rotation independent of frame rate
-    globe.rotation.y -= 0.007 * (deltaTime / 16.67); // 60 FPS normalized
+    // Smooth rotation independent of frame rate (west to east)
+    globe.rotation.y += 0.005 * (deltaTime / 16.67); // Slower rotation, 60 FPS normalized
 
     // Zoom animation during first 0.8 seconds
     if (elapsed < animationDuration) {
         const progress = elapsed / animationDuration;
-        // Smoother easing function
         const easeProgress = 1 - Math.pow(1 - progress, 2);
         camera.position.z = initialZ - (initialZ - targetZ) * easeProgress;
         camera.updateProjectionMatrix();
