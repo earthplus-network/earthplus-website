@@ -186,15 +186,15 @@ camera.updateProjectionMatrix();
 const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
 globe.scale.set(scale, scale, scale);
 
-// Set Earth's tilt only
+// Set Earth's tilt and initial position
 globe.rotation.z = 0;
 globe.rotation.x = THREE.MathUtils.degToRad(23.5); // Earth's axial tilt
-globe.rotation.y = Math.PI; // Add this line to set initial rotation position
+globe.rotation.y = 0; // Start from 0 for consistent west-to-east motion
 
 // Animation variables
 const startTime = Date.now();
 const animationDuration = 1400;
-const initialZ = camera.position.z;
+const initialZ = targetZ * 1.5; // Start further out for smoother zoom
 let lastTime = startTime;
 const rotationSpeed = 0.003; // Consistent west to east rotation speed
 
