@@ -187,7 +187,7 @@ const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
 globe.scale.set(scale, scale, scale);
 
 // Set initial rotation and tilt
-globe.rotation.y = -Math.PI / 2; // Changed initial rotation
+globe.rotation.y = Math.PI / 2; // Changed initial rotation
 globe.rotation.z = 0;
 globe.rotation.x = THREE.MathUtils.degToRad(23.5); // Earth's axial tilt
 
