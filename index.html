@@ -205,7 +205,7 @@ let lastTime = startTime;
     lastTime = currentTime;
     
     // Smooth rotation around tilted axis (west to east)
-    globe.rotation.y -= 0.003 * (deltaTime / 16.67); // Slower rotation for more realistic feel
+    globe.rotation.y += 0.003 * (deltaTime / 16.67); // Slower rotation for more realistic feel
 
     // Zoom animation during first 0.8 seconds
     if (elapsed < animationDuration) {
