@@ -189,13 +189,14 @@ globe.scale.set(scale, scale, scale);
 // Set Earth's tilt only
 globe.rotation.z = 0;
 globe.rotation.x = THREE.MathUtils.degToRad(23.5); // Earth's axial tilt
+globe.rotation.y = Math.PI; // Add this line to set initial rotation position
 
 // Animation variables
 const startTime = Date.now();
-const animationDuration = 800;
+const animationDuration = 1400;
 const initialZ = camera.position.z;
 let lastTime = startTime;
-const rotationSpeed = 0.002; // Consistent west to east rotation speed
+const rotationSpeed = 0.003; // Consistent west to east rotation speed
 
 // Animation loop
 (function animate() {
