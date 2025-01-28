@@ -187,7 +187,7 @@ const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
 globe.scale.set(scale, scale, scale);
 
 // Set initial rotation and tilt
-globe.rotation.y = Math.PI / 2;
+globe.rotation.y = -Math.PI;  // Start from a different position
 globe.rotation.z = 0;
 globe.rotation.x = THREE.MathUtils.degToRad(23.5); // Earth's axial tilt
 
@@ -196,6 +196,7 @@ const startTime = Date.now();
 const animationDuration = 800;
 const initialZ = camera.position.z;
 let lastTime = startTime;
+const rotationSpeed = 0.002; // Consistent rotation speed
 
 // Animation loop
 (function animate() {
@@ -204,8 +205,8 @@ let lastTime = startTime;
     const elapsed = currentTime - startTime;
     lastTime = currentTime;
     
-    // Smooth rotation around tilted axis (west to east)
-    globe.rotation.y += 0.003 * (deltaTime / 16.67); // Slower rotation for more realistic feel
+    // Consistent west to east rotation from the start
+    globe.rotation.y += rotationSpeed * (deltaTime / 16.67);
 
     // Zoom animation during first 0.8 seconds
     if (elapsed < animationDuration) {
