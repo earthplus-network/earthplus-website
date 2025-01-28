@@ -116,6 +116,7 @@
         antialias: true,
         powerPreference: "high-performance"
     });
+    renderer.setClearColor(0x000000, 0); // Set clear color with 0 opacity
     
     // Get container size
     const container = document.getElementById('globe');
@@ -128,8 +129,8 @@
     const scene = new THREE.Scene();
     scene.background = null;
     scene.add(globe);
-    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
     dirLight.position.set(5, 3, 5);
     scene.add(dirLight);
   
