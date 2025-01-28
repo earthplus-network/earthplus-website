@@ -187,25 +187,30 @@ const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
 globe.scale.set(scale, scale, scale);
 
 // Animation variables
-let startTime = Date.now();
-const animationDuration = 1000; // 1 second for snappier zoom
+const startTime = Date.now();
+const animationDuration = 800; // Shorter duration: 0.8 seconds
 const initialZ = camera.position.z;
+let lastTime = startTime;
 
 // Animation loop
 (function animate() {
     const currentTime = Date.now();
+    const deltaTime = currentTime - lastTime;
     const elapsed = currentTime - startTime;
+    lastTime = currentTime;
     
-    // Zoom animation during first second
+    // Smooth rotation independent of frame rate
+    globe.rotation.y -= 0.007 * (deltaTime / 16.67); // 60 FPS normalized
+
+    // Zoom animation during first 0.8 seconds
     if (elapsed < animationDuration) {
         const progress = elapsed / animationDuration;
         // Smoother easing function
-        const easeProgress = 1 - Math.cos((progress * Math.PI) / 2);
+        const easeProgress = 1 - Math.pow(1 - progress, 2);
         camera.position.z = initialZ - (initialZ - targetZ) * easeProgress;
         camera.updateProjectionMatrix();
     }
 
-    globe.rotation.y -= 0.007;
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 })();
