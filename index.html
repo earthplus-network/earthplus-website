@@ -114,10 +114,11 @@ const renderer = new THREE.WebGLRenderer({
     alpha: true,
     antialias: true,
     powerPreference: "high-performance",
+    logarithmicDepthBuffer: true,
 });
 
 renderer.setClearColor(0x000000, 0);
-renderer.setPixelRatio(1); // Force pixel ratio to 1
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Better antialiasing
 
 // Get container size
 const container = document.getElementById('globe');
