@@ -114,7 +114,8 @@
     const renderer = new THREE.WebGLRenderer({ 
         alpha: true,
         antialias: true,
-        powerPreference: "high-performance"
+        powerPreference: "high-performance",
+        
     });
     renderer.setClearColor(0x000000, 0); // Set clear color with 0 opacity
     
@@ -122,7 +123,7 @@
     const container = document.getElementById('globe');
     const size = Math.min(container.clientWidth, container.clientHeight);
     renderer.setSize(size, size);
-    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+    renderer.setPixelRatio(1);
     document.getElementById('globe').appendChild(renderer.domElement);
   
     // Setup scene
