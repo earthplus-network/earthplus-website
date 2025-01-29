@@ -192,21 +192,53 @@ textureLoader.load(
     }
 );
 
+// Check WebGL availability
+if (!THREE.WEBGL.isWebGLAvailable()) {
+    console.error('WebGL is not available in your browser');
+    document.getElementById('globe').innerHTML = 'WebGL is not available in your browser';
+    throw new Error('WebGL not available');
+}
+
 // Setup renderer
-const renderer = new THREE.WebGLRenderer({ 
-    alpha: true,
-    antialias: true,
-    powerPreference: "high-performance",
-});
+let renderer;
+try {
+    renderer = new THREE.WebGLRenderer({ 
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance",
+    });
+    console.log('Renderer created successfully');
+} catch (e) {
+    console.error('Failed to create renderer:', e);
+    throw e;
+}
 
 renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(1);
 
 // Get container size
 const container = document.getElementById('globe');
+if (!container) {
+    console.error('Globe container not found');
+    throw new Error('Globe container not found');
+}
+
+console.log('Container dimensions:', {
+    clientWidth: container.clientWidth,
+    clientHeight: container.clientHeight,
+    offsetWidth: container.offsetWidth,
+    offsetHeight: container.offsetHeight
+});
+
 const size = Math.min(container.clientWidth, container.clientHeight);
+if (size <= 0) {
+    console.error('Invalid container size:', size);
+    throw new Error('Invalid container size');
+}
+
 renderer.setSize(size, size);
-document.getElementById('globe').appendChild(renderer.domElement);
+container.appendChild(renderer.domElement);
+console.log('Renderer attached to container');
 
 // Setup scene
 const scene = new THREE.Scene();
@@ -251,11 +283,19 @@ const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
 globe.scale.set(scale, scale, scale);
 
 // Animation loop
-(function animate() {
-    globe.rotation.y += 0.007;
-    renderer.render(scene, camera);
-    requestAnimationFrame(animate);
-})();
+function animate() {
+    try {
+        globe.rotation.y += 0.007;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    } catch (e) {
+        console.error('Animation error:', e);
+    }
+}
+
+// Start animation
+console.log('Starting animation loop');
+animate();
 
 </script>
  
