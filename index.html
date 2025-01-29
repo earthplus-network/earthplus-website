@@ -141,6 +141,10 @@ const renderer = new THREE.WebGLRenderer({
     logarithmicDepthBuffer: true,
 });
 
+// Add CSS filter for blur effect
+renderer.domElement.style.transition = 'filter 1.4s ease-out';
+renderer.domElement.style.filter = 'blur(10px)';
+
 renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Better antialiasing
 
@@ -208,12 +212,16 @@ const rotationSpeed = 0.004; // Consistent west to east rotation speed
     // Consistent west to east rotation from the start
     globe.rotation.y += rotationSpeed * (deltaTime / 16.67);
 
-    // Zoom animation during first 0.8 seconds
+    // Zoom and blur animation
     if (elapsed < animationDuration) {
         const progress = elapsed / animationDuration;
         const easeProgress = 1 - Math.pow(1 - progress, 2);
         camera.position.z = initialZ - (initialZ - targetZ) * easeProgress;
         camera.updateProjectionMatrix();
+        
+        // Update blur based on zoom progress
+        const blurAmount = 10 * (1 - easeProgress);
+        renderer.domElement.style.filter = `blur(${blurAmount}px)`;
     }
 
     renderer.render(scene, camera);
