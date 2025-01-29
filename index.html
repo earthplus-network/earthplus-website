@@ -194,9 +194,9 @@ globe.rotation.y = 0; // Start from 0 for consistent west-to-east motion
 // Animation variables
 const startTime = Date.now();
 const animationDuration = 1400;
-const initialZ = -targetZ * 2.5; // Start further out for smoother zoom
+const initialZ = targetZ * 1.5; // Start further out for smoother zoom
 let lastTime = startTime;
-const rotationSpeed = 0.004; // Consistent west to east rotation speed
+const rotationSpeed = 0.00; // Consistent west to east rotation speed
 
 // Animation loop
 (function animate() {
@@ -208,7 +208,7 @@ const rotationSpeed = 0.004; // Consistent west to east rotation speed
     // Consistent west to east rotation from the start
     globe.rotation.y += rotationSpeed * (deltaTime / 16.67);
 
-    // Zoom animation
+    // Zoom animation during first 0.8 seconds
     if (elapsed < animationDuration) {
         const progress = elapsed / animationDuration;
         const easeProgress = 1 - Math.pow(1 - progress, 2);
