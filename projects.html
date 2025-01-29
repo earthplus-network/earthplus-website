@@ -5,22 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects | earth+</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Satoshi', sans-serif;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
 </head>
-<body class="bg-white text-gray-800 leading-relaxed">
-    <nav class="fixed top-0 w-full bg-white shadow-md z-50">
+<body class="bg-white dark:bg-[#141413] text-gray-800 dark:text-white leading-relaxed transition-colors duration-200">
+    <nav class="fixed top-0 w-full bg-white dark:bg-[#141413] shadow-md z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <a href="index.html" class="text-2xl font-bold text-gray-800">earth+</a>
+                <a href="index.html" class="text-2xl font-bold text-black dark:text-white">earth+</a>
                 <!-- Mobile menu button -->
                 <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
-                <div class="hidden md:flex space-x-8">
-                    <a href="about.html" class="text-gray-600 hover:text-green-500 font-medium transition-colors">About</a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="about.html" class="text-black dark:text-white hover:text-green-500 font-medium transition-colors">About</a>
                     <a href="projects.html" class="text-green-500 font-medium transition-colors">Projects</a>
-                    <a href="#join" class="text-gray-600 hover:text-green-500 font-medium transition-colors">Join Us</a>
+                    <a href="#join" class="text-black dark:text-white hover:text-green-500 font-medium transition-colors">Join Us</a>
+                    <!-- Dark mode toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
+                        <!-- Sun icon -->
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+                        </svg>
+                        <!-- Moon icon -->
+                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
             <!-- Mobile menu -->
@@ -42,11 +64,55 @@
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
+
+        // Dark mode toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+
+        // On page load, check system preference
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Update icon based on current theme
+        function updateIcon() {
+            if (document.documentElement.classList.contains('dark')) {
+                themeToggleLightIcon.classList.remove('hidden');
+                themeToggleDarkIcon.classList.add('hidden');
+            } else {
+                themeToggleLightIcon.classList.add('hidden');
+                themeToggleDarkIcon.classList.remove('hidden');
+            }
+        }
+
+        // Initial icon update
+        updateIcon();
+
+        // Toggle theme
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            updateIcon();
+            
+            // Save preference
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            updateIcon();
+        }
     </script>
 
     <main class="pt-24">
         <section class="px-4 py-12 max-w-4xl mx-auto">
-            <div class="bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
+            <div class="bg-white/80 dark:bg-[#141413]/80 backdrop-blur-md rounded-2xl p-8 shadow-lg">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6">Our Projects</h2>
                 <div class="grid md:grid-cols-2 gap-8">
                     <div class="space-y-4">
