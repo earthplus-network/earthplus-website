@@ -171,117 +171,57 @@
   
 <script type="module">
 
-import ThreeGlobe from 'https://esm.sh/three-globe?external=three';
-import * as THREE from 'https://esm.sh/three';
+import ThreeGlobe from 'https://unpkg.com/three-globe@2.30.0/dist/three-globe.module.js';
+import * as THREE from 'three';
 
+// Initialize scene
+const scene = new THREE.Scene();
+scene.background = null;
+
+// Initialize globe
 const globe = new ThreeGlobe()
-.globeImageUrl('/textures/06_earth.jpg')
-.atmosphereColor(new THREE.Color(0x000000))
-.atmosphereAltitude(0.1)
+    .globeImageUrl('./textures/06_earth.jpg')
+    .atmosphereColor(new THREE.Color(0x000000))
+    .atmosphereAltitude(0.1);
 
-const geometry = new THREE.SphereGeometry(15, 32, 16);
-
-// Add error handling for texture loading
-const textureLoader = new THREE.TextureLoader();
-textureLoader.load(
-    '/textures/06_earth.jpg',
-    function (texture) {
-        console.log('Texture loaded successfully');
-    },
-    undefined,
-    function (err) {
-        console.error('Error loading texture:', err);
-    }
-);
-
-// Check WebGL availability
-if (!THREE.WEBGL.isWebGLAvailable()) {
-    console.error('WebGL is not available in your browser');
-    document.getElementById('globe').innerHTML = 'WebGL is not available in your browser';
-    throw new Error('WebGL not available');
-}
+// Set initial globe properties
+globe.rotateY(-Math.PI * 0.2); 
+globe.rotateX(-Math.PI * 0.05);
 
 // Setup renderer
-let renderer;
-try {
-    renderer = new THREE.WebGLRenderer({ 
-        alpha: true,
-        antialias: true,
-        powerPreference: "high-performance",
-    });
-    console.log('Renderer created successfully');
-} catch (e) {
-    console.error('Failed to create renderer:', e);
-    throw e;
-}
+const renderer = new THREE.WebGLRenderer({ 
+    alpha: true,
+    antialias: true,
+    powerPreference: "high-performance",
+    canvas: document.createElement('canvas')
+});
 
 renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(1);
 
-// Get container size
+// Setup container and size
 const container = document.getElementById('globe');
-if (!container) {
-    console.error('Globe container not found');
-    throw new Error('Globe container not found');
-}
-
-console.log('Container dimensions:', {
-    clientWidth: container.clientWidth,
-    clientHeight: container.clientHeight,
-    offsetWidth: container.offsetWidth,
-    offsetHeight: container.offsetHeight
-});
-
 const size = Math.min(container.clientWidth, container.clientHeight);
-if (size <= 0) {
-    console.error('Invalid container size:', size);
-    throw new Error('Invalid container size');
-}
-
 renderer.setSize(size, size);
 container.appendChild(renderer.domElement);
-console.log('Renderer attached to container');
 
-// Setup scene
-const scene = new THREE.Scene();
-scene.background = null;
-
-// Add the globe to the scene
+// Add globe to scene
 scene.add(globe);
 
-// Lighting setup - increased intensities
-// Main front light - increased from 1.2 to 2.0
-const frontLight = new THREE.DirectionalLight(0xffffff, 2.0);
-frontLight.position.set(0, 0, 1);
-scene.add(frontLight);
+// Setup camera
+const camera = new THREE.PerspectiveCamera(50, 1, 1, 2000);
+camera.position.z = 500;
 
-// Fill light from the back - increased from 0.4 to 0.8
-const backLight = new THREE.DirectionalLight(0xffffff, 0.8);
-backLight.position.set(0, 0, -1);
-scene.add(backLight);
-
-// Ambient light - increased from 0.1 to 0.3
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+// Setup lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 scene.add(ambientLight);
 
-// Add two subtle side lights for better illumination
-const leftLight = new THREE.DirectionalLight(0xffffff, 0.5);
-leftLight.position.set(-1, 0, 0);
-scene.add(leftLight);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(1, 1, 1);
+scene.add(directionalLight);
 
-const rightLight = new THREE.DirectionalLight(0xffffff, 0.5);
-rightLight.position.set(1, 0, 0);
-scene.add(rightLight);
-
-// Camera setup
-const camera = new THREE.PerspectiveCamera(45, 1, 1, 1000);
-camera.position.z = window.innerWidth < 768 ? 400 : window.innerWidth < 1024 ? 450 : 500;
-camera.lookAt(scene.position);
-camera.aspect = 1;
-camera.updateProjectionMatrix();
-
-// Scale globe based on screen size
-const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
+// Scale globe
+const scale = window.innerWidth < 768 ? 0.8 : 1;
 globe.scale.set(scale, scale, scale);
 
 // Animation loop
