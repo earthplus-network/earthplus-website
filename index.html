@@ -220,7 +220,7 @@ const rotationSpeed = 0.004; // Consistent west to east rotation speed
         camera.updateProjectionMatrix();
         
         // Update blur based on zoom progress
-        const blurAmount = 10 * (1 - easeProgress);
+        const blurAmount = 1 * (1 - easeProgress);
         renderer.domElement.style.filter = `blur(${blurAmount}px)`;
     }
 
