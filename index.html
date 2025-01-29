@@ -175,9 +175,22 @@ import ThreeGlobe from 'https://esm.sh/three-globe?external=three';
 import * as THREE from 'https://esm.sh/three';
 
 const globe = new ThreeGlobe()
-.globeImageUrl('./textures/06_earth.jpg')
+.globeImageUrl('/textures/06_earth.jpg')
 .atmosphereColor(new THREE.Color(0x000000))
-.atmosphereAltitude(0)
+.atmosphereAltitude(0.1)
+
+// Add error handling for texture loading
+const textureLoader = new THREE.TextureLoader();
+textureLoader.load(
+    '/textures/06_earth.jpg',
+    function (texture) {
+        console.log('Texture loaded successfully');
+    },
+    undefined,
+    function (err) {
+        console.error('Error loading texture:', err);
+    }
+);
 
 // Setup renderer
 const renderer = new THREE.WebGLRenderer({ 
@@ -228,7 +241,7 @@ scene.add(rightLight);
 
 // Camera setup
 const camera = new THREE.PerspectiveCamera(45, 1, 1, 1000);
-camera.position.z = window.innerWidth < 768 ? 280 : window.innerWidth < 1024 ? 290 : 300;
+camera.position.z = window.innerWidth < 768 ? 400 : window.innerWidth < 1024 ? 450 : 500;
 camera.lookAt(scene.position);
 camera.aspect = 1;
 camera.updateProjectionMatrix();
