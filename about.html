@@ -22,7 +22,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <a href="index.html" class="text-2xl font-bold text-black dark:text-white">earth+</a>
-                <div class="flex items-center">
+                <div class="flex items-center space-x-4">
+                    <!-- Simple circle toggle for dark mode (mobile only) -->
+                    <button id="theme-toggle-mobile" class="md:hidden w-5 h-5 rounded-full bg-black dark:bg-white transition-colors duration-200 cursor-pointer hover:scale-110"></button>
                     <!-- Mobile menu button -->
                     <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -60,14 +62,18 @@
 
         // Dark mode toggle
         const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
 
-
-        // Toggle theme
-        themeToggleBtn.addEventListener('click', () => {
+        // Toggle theme function
+        const toggleTheme = () => {
             document.documentElement.classList.toggle('dark');
             // Save preference
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-        });
+        };
+
+        // Add click handlers to both toggles
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleMobileBtn.addEventListener('click', toggleTheme);
 
         // Check for saved theme preference
         const savedTheme = localStorage.getItem('theme');
