@@ -71,8 +71,6 @@
 
         // Dark mode toggle
         const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
 
         // On page load, check system preference
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -94,7 +92,6 @@
             } else {
                 document.documentElement.classList.remove('dark');
             }
-            updateIcon();
         }
     </script>
 
