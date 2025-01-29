@@ -174,10 +174,24 @@
 import ThreeGlobe from 'https://esm.sh/three-globe?external=three';
 import * as THREE from 'https://esm.sh/three';
 
-const globe = new ThreeGlobe()
-.globeImageUrl('./textures/06_earth.jpg')
-.atmosphereColor(new THREE.Color(0x000000))
-.atmosphereAltitude(0)
+// Create globe with proper texture loading
+const globe = new ThreeGlobe();
+
+// Load earth texture
+const textureLoader = new THREE.TextureLoader();
+textureLoader.load(
+    './textures/06_earth.jpg',
+    function (texture) {
+        globe.globeImageUrl('./textures/06_earth.jpg');
+    },
+    undefined,
+    function (error) {
+        console.error('Error loading texture:', error);
+    }
+);
+
+globe.atmosphereColor(new THREE.Color(0x3a228a))
+    .atmosphereAltitude(0.25)
 
 // Setup renderer
 const renderer = new THREE.WebGLRenderer({ 
@@ -185,7 +199,9 @@ const renderer = new THREE.WebGLRenderer({
     antialias: true,
     powerPreference: "high-performance",
     logarithmicDepthBuffer: true,
+    canvas: document.createElement('canvas')
 });
+renderer.setPixelRatio(window.devicePixelRatio);
 
 renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Better antialiasing
@@ -204,18 +220,17 @@ scene.background = null;
 scene.add(globe);
 
 // Lighting setup - key changes here
-// Main front light
-const frontLight = new THREE.DirectionalLight(0xffffff, 1.8);
-frontLight.position.set(0, 0, 1);
-scene.add(frontLight);
+// Main directional light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+directionalLight.position.set(100, 100, 100);
+scene.add(directionalLight);
 
-// Slightly dimmer fill light from the back
-const backLight = new THREE.DirectionalLight(0xffffff, 0.4);
-backLight.position.set(0, 0, -1);
-scene.add(backLight);
+// Add hemisphere light for better ambient illumination
+const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
+scene.add(hemisphereLight);
 
-// Very subtle ambient light
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+// Ambient light for overall scene brightness
+const ambientLight = new THREE.AmbientLight(0x404040, 1);
 scene.add(ambientLight);
 
 // Camera setup - adjusted position and FOV
@@ -229,7 +244,7 @@ camera.aspect = 1;
 camera.updateProjectionMatrix();
 
 // Scale globe based on screen size
-const scale = window.innerWidth < 768 ? 1.6 : window.innerWidth < 1024 ? 3 : 4;
+const scale = window.innerWidth < 768 ? 60 : window.innerWidth < 1024 ? 80 : 100;
 globe.scale.set(scale, scale, scale);
 
 // Set Earth's tilt and initial position
